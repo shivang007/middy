@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14.0.0
+          node-version: 16.0.0
       - name: Use npm 7.5
         run: |
           npm install -g npm@7.5
@@ -27,9 +27,9 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-      - name: Build as Commonjs for Node.js v12
-        run: |
-          ./node_modules/.bin/lerna exec --bail --concurrency 2 -- ../../node_modules/.bin/babel --root-mode upward index.js --out-file index.js
+      #- name: Build as Commonjs for Node.js v14
+      #  run: |
+      #    ./node_modules/.bin/lerna exec --bail --concurrency 2 -- ../../node_modules/.bin/babel --root-mode upward index.js --out-file index.js
       - name: Release
         run: |
           npm run lerna:publish

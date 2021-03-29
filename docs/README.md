@@ -33,7 +33,7 @@
 </p>
 </div>
 
-⚠️ NOTE: if you are upgrading from [Middy 1.x](https://github.com/middyjs/middy/tree/1.x), check out the [upgrade instructions](/docs/UPGRADE.md)!
+⚠️ NOTE: if you are upgrading from [Middy 2.x](https://github.com/middyjs/middy/tree/2.x), check out the [upgrade instructions](/docs/UPGRADE.md)!
 
 ## What is Middy
 
