@@ -88,7 +88,7 @@ const middy = (handler = () => { }, plugin) => {
     return instance
   }
   instance.onError = (onErrorMiddleware) => {
-    onErrorMiddlewares.push(onErrorMiddleware)
+    onErrorMiddlewares.unshift(onErrorMiddleware)
     return instance
   }
 

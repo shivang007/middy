@@ -38,8 +38,6 @@ const httpErrorHandlerMiddleware = (opts = {}) => {
         typeof request.response?.body === 'string'
           ? 'plain/text'
           : 'application/json'
-
-      return request.response
     }
   }
 

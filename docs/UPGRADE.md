@@ -1,3 +1,16 @@
+# Upgrade 2.x -> 3.x
+
+See [CHANGELOG](/docs/CHANGELOG.md) for an overview of changes.
+
+Version 3.x of Middy no longer supports Node.js versions 12.x. You are highly encouraged to move to Node.js 16.
+
+## Core
+- `onError` middleware call stack reversed to resolve #622
+
+## Middleware
+- Remove `return` from `onError` in `https-error-handler`, related to `onError` call stack reversal
+- Deprecate `setToEnv` from `rds-signer`, `secrets-manager`, `ssm`, `sts`
+
 # Upgrade 1.x -> 2.x
 
 See [CHANGELOG](/docs/CHANGELOG.md) for an overview of changes.
