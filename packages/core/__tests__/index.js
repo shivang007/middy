@@ -312,16 +312,14 @@ test('If there is an error in the after middlewares the error middlewares are in
   }
 })
 
-test('If theres an error and one error middleware handles the error, the next error middlewares is executed', async (t) => {
+test('If theres an error and one error middleware handles the error, the next error middlewares is not executed', async (t) => {
   const expectedResponse = { message: 'error handled' }
 
   const handler = middy(() => {
     throw new Error('Some error 304')
   })
-  const onErrorMiddleware1 = () => {
-    return expectedResponse
-  }
-  const onErrorMiddleware2 = () => { }
+  const onErrorMiddleware1 = () => { }
+  const onErrorMiddleware2 = () => { return expectedResponse }
 
   const onErrorMiddleware1Spy = sinon.spy(onErrorMiddleware1)
   const onErrorMiddleware2Spy = sinon.spy(onErrorMiddleware2)
@@ -329,8 +327,8 @@ test('If theres an error and one error middleware handles the error, the next er
   handler.onError(onErrorMiddleware1Spy).onError(onErrorMiddleware2Spy)
 
   const response = await handler({}, {})
-  t.true(onErrorMiddleware1Spy.calledOnce)
-  t.false(onErrorMiddleware2Spy.calledOnce)
+  t.false(onErrorMiddleware1Spy.calledOnce)
+  t.true(onErrorMiddleware2Spy.calledOnce)
   t.deepEqual(response, expectedResponse)
 })
 
@@ -340,10 +338,8 @@ test("If theres an error and the first error middleware doesn't handle the error
   const handler = middy(() => {
     throw new Error('Some error 331')
   })
-  const onErrorMiddleware1 = () => { }
-  const onErrorMiddleware2 = () => {
-    return expectedResponse
-  }
+  const onErrorMiddleware1 = () => { return expectedResponse }
+  const onErrorMiddleware2 = () => {}
 
   const onErrorMiddleware1Spy = sinon.spy(onErrorMiddleware1)
   const onErrorMiddleware2Spy = sinon.spy(onErrorMiddleware2)
@@ -598,13 +594,13 @@ test('It will stop invoking all the onError handlers if one of them returns a pr
   const middleware1 = {
     onError: (request) => {
       request.response = { error: request.error }
-      return Promise.reject(request.error)
+      return Promise.resolve(request.error)
     }
   }
   const middleware2 = {
     onError: (request) => {
       request.middleware2_called = true
-      return Promise.resolve(request.error)
+      return Promise.reject(request.error)
     }
   }
 
@@ -614,7 +610,7 @@ test('It will stop invoking all the onError handlers if one of them returns a pr
     await handler({}, {})
   } catch (e) {
     t.is(e.message, 'something bad happened')
-    t.is(handler.middleware2_called, undefined)
+    t.is(handler.middleware1_called, undefined)
   }
 })
 
